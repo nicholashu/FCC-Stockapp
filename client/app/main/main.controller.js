@@ -4,33 +4,49 @@ angular.module('stockAppApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
    $scope.awesomeThings = {
     close: [],
-    date: ["2015-09-14T16:00:00.000Z"],
-    symbol: "AAPL",
+    date: [],
+    symbol: "",
     };
+
+  $scope.stocks = [{
+    name: "AAPL",
+  }];
 
   $scope.labels = [];
   $scope.series = [];
   $scope.data = [
   ];
-   
 
-    $scope.getStock = function() {
-    $http.get('/api/things/stocks').success(function(awesomeThings) {
-      var stockNums =  [];
-      var stockDates = [];
-      var name = ""
-      awesomeThings.forEach(function(thing){
-         stockNums.push(thing.close);
-         stockDates.push(thing.date.substr(0,10));
-         name = thing.symbol
+  $http.get('/api/things').success(function(stock) {
+    $scope.stocks = stock;
+    socket.syncUpdates('stock', $scope.stocks);
+    console.log(stock)
+  });
 
+
+  $scope.stocks.forEach(function(stock){
+  
+     for (var prop in stock){
+      $http.get('/api/things/stocks/' + stock[name]).success(function(awesomeThings) {
+        var stockNums =  [];
+        var stockDates = [];
+        var name = "";
+        awesomeThings.forEach(function(thing){
+           stockNums.push(thing.close);
+           stockDates.push(thing.date.substr(0,10));
+           name = thing.symbol;
+
+        });
+        $scope.data.push(stockNums);
+        $scope.labels = stockDates;
+        $scope.series.push(name);
+        socket.syncUpdates('thing', $scope.awesomeThings);
       });
-      $scope.data.push(stockNums);
-      $scope.labels = stockDates;
-      $scope.series = name;
-      socket.syncUpdates('thing', $scope.awesomeThings);
-    });
     };
+  });
+
+
+
 
 
     $scope.addThing = function() {

@@ -22,7 +22,7 @@ var yahooFinance = require('yahoo-finance');
 
 exports.getStock = function(req, res) {
   yahooFinance.historical({
-    symbol: 'AAPL', 
+    symbol: req.params.stock,
     from: date.from(),
     to: date.to(),
     // period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 

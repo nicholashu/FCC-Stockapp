@@ -5,18 +5,17 @@ Chart
 <canvas id="line" class="chart chart-line" chart-data="data"
   chart-labels="labels" chart-legend="true" chart-series="series">
 </canvas> 
-  {{series}}
 </header>
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}"><button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a>{{thing.close}}<br>{{thing.date}}</li>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="stock in stocks">
+        <li><a href="#" tooltip=""><button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a>{{stock.name}}</li>
       </ul>
     </div>
   </div>
-  <button ng-click="getStock()">go button</button>
+{{stocks}}
 
   <form class="thing-form">
     <label>Syncs in realtime across clients</label>

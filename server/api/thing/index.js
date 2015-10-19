@@ -6,7 +6,7 @@ var controller = require('./thing.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
-router.get('/stocks', controller.getStock);
+router.get('/stocks/:stock', controller.getStock);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
