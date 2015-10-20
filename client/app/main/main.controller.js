@@ -21,7 +21,6 @@ angular.module('stockAppApp')
 
     function getStocks() {
     $scope.stocks.forEach(function(stock){
-      console.log(stock.name)
         $http.get('/api/things/stocks/' + stock.name).success(function(awesomeThings) {
           var stockNums =  [];
           var stockDates = [];
@@ -47,7 +46,8 @@ angular.module('stockAppApp')
     });
     };
 
-loadStocks();
+    loadStocks();
+
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;
@@ -57,7 +57,9 @@ loadStocks();
     };
 
     $scope.deleteThing = function(thing) {
+      console.log(thing)
       $http.delete('/api/things/' + thing._id);
+      socket.syncUpdates('stock', $scope.stocks);
     };
 
     $scope.$on('$destroy', function () {
