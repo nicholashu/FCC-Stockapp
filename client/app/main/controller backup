@@ -21,8 +21,8 @@ angular.module('stockAppApp')
 
     function getStocks() {
     $scope.stocks.forEach(function(stock){
-      console.log(stock.name)
-        $http.get('/api/things/stocks/' + stock.name).success(function(awesomeThings) {
+       for (var name in stock){
+        $http.get('/api/things/stocks/' + stock[name]).success(function(awesomeThings) {
           var stockNums =  [];
           var stockDates = [];
           var name = "";
@@ -35,7 +35,7 @@ angular.module('stockAppApp')
           $scope.labels = stockDates;
           $scope.series.push(name);
         });
- 
+      };
     });
     };
 
@@ -43,11 +43,12 @@ angular.module('stockAppApp')
     $http.get('/api/things').success(function(stock) {
       $scope.stocks = stock;
       socket.syncUpdates('stock', $scope.stocks);
-      getStocks();
     });
     };
 
-loadStocks();
+    loadStocks()
+
+
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;
