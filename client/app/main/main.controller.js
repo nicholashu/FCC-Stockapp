@@ -11,12 +11,18 @@ angular.module('stockAppApp')
   $scope.stocks = [{
     name: "AAPL",
   }];
-
+  $scope.newStock = ""
   $scope.labels = [];
   $scope.series = [];
   $scope.data = [
   ];
 
+
+    function reset(){
+      $scope.labels = [];
+      $scope.series = [];
+      $scope.data = [];
+    };
 
 
     function getStocks() {
@@ -41,28 +47,34 @@ angular.module('stockAppApp')
     function loadStocks(){
     $http.get('/api/things').success(function(stock) {
       $scope.stocks = stock;
-      socket.syncUpdates('stock', $scope.stocks);
       getStocks();
+      socket.syncUpdates('stock', $scope.stocks);
     });
     };
 
     loadStocks();
 
-    $scope.addThing = function() {
+    $scope.addThing = function(thing) {
       if($scope.newThing === '') {
         return;
       }
       $http.post('/api/things', { name: $scope.newThing });
+      socket.syncUpdates('thing', $scope.stocks);
+      socket.syncUpdates('thing', $scope.series);
       $scope.newThing = '';
+      reset();
+      loadStocks();
     };
 
     $scope.deleteThing = function(thing) {
-      console.log(thing)
       $http.delete('/api/things/' + thing._id);
-      socket.syncUpdates('stock', $scope.stocks);
+      socket.syncUpdates('thing', $scope.stocks);
+      socket.syncUpdates('thing', $scope.series);
+      reset();
+      loadStocks();
     };
-
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
+      
     });
   });
